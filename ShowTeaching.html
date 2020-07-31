@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>教师中心</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">个人中心</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item"></li>
+            <li class="layui-nav-item"><a href="/index">登出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <li class="layui-nav-item"><a href="ChangeTeacher2">修改信息</a></li>
+                <li class="layui-nav-item"><a href="ShowTeaching#">查看授课</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+
+        <table class="layui-table" lay-even="" lay-skin="row"  id="person" lay-filter="person_test">
+
+        </table>
+
+
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+    </div>
+</div>
+<script src="/layui/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function() {
+        var laydate = layui.laydate //日期
+            , laypage = layui.laypage //分页
+            , layer = layui.layer //弹层
+            , table = layui.table //表格
+            , carousel = layui.carousel //轮播
+            , upload = layui.upload //上传
+            , element = layui.element //元素操作
+            , slider = layui.slider //滑块
+        table.render({
+            elem: '#person'
+            , height: 420
+            , url: 'http://localhost:8080/teacher_info/getAllTeacher' //数据接口
+            , title: '学生信息表'
+            , page: true //开启分页
+            , toolbar: ['filter', 'print', 'exports'] //开启工具栏，此处显示默认图标，可以自定义模板，详见文档defaultToolbar:['filter','print','exports']
+            , cols:
+                [
+                    [ //表头
+                        {field: 't_id', title: '教师号', width: "18%", sort: true}
+                        , {field: 't_name', title: '课程名', width: "10%"}
+                        , {field: 't_gender', title: '课程类型', width: "15%", sort: true}
+                        , {field: 't_dept', title: '学期', width: "8%"}
+                        , {field: 't_title', title: '授课类型', width: "20%"}
+                        , {field: 't_edu', title: '课时数', width: "8%"}
+                    ]
+                ]
+        });
+    });
+
+</script>
+</body>
+</html>

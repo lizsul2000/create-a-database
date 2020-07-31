@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>课程管理系统</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">信息管理系统</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item"></li>
+            <li class="layui-nav-item"><a href="/index">登出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">学生管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="ShowAllStudent">学生信息</a></dd>
+                        <dd><a href="AddNewStudent">添加学生</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">教师管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="ShowAllTeacher">教师信息</a></dd>
+                        <dd><a href="AddNewTeacher">添加教师</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a href="javascript:;">课程管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="ShowAllCourse">课程信息</a></dd>
+                        <dd><a href="AddNewCourse">添加课程</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a href="javascript:;">选课管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="ShowAllSC">选课信息</a></dd>
+                        <dd><a href="AddNewSC">添加选课</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a href="javascript:;">授课管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="ShowAllTC">授课信息</a></dd>
+                        <dd><a href="AddNewTC">添加授课</a></dd>
+                    </dl>
+                </li>
+
+
+                <li class="layui-nav-item"><a href="ShowClass">班级学生选课情况报表</a></li>
+                <li class="layui-nav-item"><a href="ShowMA">授课方式和学生能力表</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>修改课程</legend>
+        </fieldset>
+        <form class="layui-form" action="" lay-filter = "person_one">
+            <div class="layui-form-item">
+                <label class="layui-form-label">课程号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="c_id"  placeholder="请输入课程号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">课程名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="c_name"  placeholder="请输入课程名" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-int">
+                <label class="layui-form-label">学分</label>
+                <div class="layui-input-block">
+                    <input type="int" name="credit"  placeholder="请输入学分" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-int">
+                <label class="layui-form-label">学期(0-上半学期，1-下半学期)</label>
+                <div class="layui-input-block">
+                    <input type="int" name="semester"  placeholder="请输入学期" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-int">
+                <label class="layui-form-label">课程性质(0-选修，1-必修)</label>
+                <div class="layui-input-block">
+                    <input type="int" name="c_type"  placeholder="请输入课程性质" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+    </div>
+</div>
+<script src="/layui/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+
+        //日期
+        laydate.render({
+            elem: '#date'
+            ,value: new Date()
+        });
+        laydate.render({
+            elem: '#date1'
+        });
+        //监听提交
+        form.on('submit(demo1)', function(data){
+
+            var url='http://localhost:8080/course_info/AddNewCourse?c_id=' +data.field.c_id+
+                '&s_name=' +data.field.c_name+
+                '&s_gender=' +data.field.credit+
+                '&s_dept=' +data.field.semester+
+                '&s_maj=' +data.field.c_type;
+            var xmlhttp;
+            xmlhttp=new XMLHttpRequest();
+            xmlhttp.open("GET",url,false);
+            xmlhttp.send(url);
+            layer.alert('提交成功', {
+                title: '提交信息'
+            })
+            return false;
+        });
+
+        var into = decodeURI(window.location.href);
+        var argsIndex = into.split("#");
+        var bokeinfo = argsIndex[1];
+        var url='http://localhost:8080/course_info/getOneCourse?c_id='+bokeinfo;
+        var xmlhttp;
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET",url,false);
+        xmlhttp.send(url);
+        var menu_now=eval('('+xmlhttp.responseText+')');
+        form.val('person_one', {
+            "s_id":menu_now.c_id
+            ,"s_name":menu_now.c_name
+            ,"s_gender":menu_now.credit
+            ,"s_dept":menu_now.semester
+            ,"s_maj":menu_now.c_type
+        });
+    });
+</script>
+</body>
+</html>

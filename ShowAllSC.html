@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>选课管理系统</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">信息管理系统</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item"></li>
+            <li class="layui-nav-item"><a href="/index">登出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">学生管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="ShowAllStudent">学生信息</a></dd>
+                        <dd><a href="AddNewStudent">添加学生</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">教师管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="ShowAllTeacher">教师信息</a></dd>
+                        <dd><a href="AddNewTeacher">添加教师</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a href="javascript:;">课程管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="ShowAllCourse">课程信息</a></dd>
+                        <dd><a href="AddNewCourse">添加课程</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a href="javascript:;">选课管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="ShowAllSC">选课信息</a></dd>
+                        <dd><a href="AddNewSC">添加选课</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a href="javascript:;">授课管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="ShowAllTC">授课信息</a></dd>
+                        <dd><a href="AddNewTC">添加授课</a></dd>
+                    </dl>
+                </li>
+
+
+                <li class="layui-nav-item"><a href="ShowClass">班级学生选课情况报表</a></li>
+                <li class="layui-nav-item"><a href="ShowMA">授课方式和学生能力表</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <table class="layui-table" lay-even="" lay-skin="row"  id="person" lay-filter="person_test">
+
+        </table>
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+    </div>
+</div>
+<script src="/layui/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function() {
+        var laydate = layui.laydate //日期
+            , laypage = layui.laypage //分页
+            , layer = layui.layer //弹层
+            , table = layui.table //表格
+            , carousel = layui.carousel //轮播
+            , upload = layui.upload //上传
+            , element = layui.element //元素操作
+            , slider = layui.slider //滑块
+        table.render({
+            elem: '#person'
+            ,height: 420
+            ,url: 'http://localhost:8080/SC_info/getAllSC' //数据接口
+            ,title: '课程信息表'
+            ,page: true //开启分页
+            ,toolbar: ['filter','print','exports'] //开启工具栏，此处显示默认图标，可以自定义模板，详见文档defaultToolbar:['filter','print','exports']
+            ,cols:
+                [
+                    [ //表头
+                        {field: 's_id', title: '学号', width:"18%" , sort: true}
+                        ,{field: 'c_id', title: '课程号', width:"18%" , sort: true}
+                        ,{field: 'sc_daily', title: '平时分', width:"8%"}
+                        ,{field: 'sc_mid', title: '期中考试成绩', width: "8%", sort: true}
+                        ,{field: 'sc_final', title: '期末考试成绩', width:"8%"}
+                        ,{field: 'sc_grade', title: '总成绩', width: "8%"}
+                        ,{field: 'sc_GPA', title: '绩点', width:"8%"}
+                        ,{field: 'sc_year', title: '年份', width:"8%"}
+                        ,{field: 'sc_semester', title: '学期(1-上半学期，2-下半学期)', width:"8%"}
+                        ,{field: 'sc_self', title: '自主学习能力(1-8)', width:"8%"}
+                        ,{field: 'sc_prac', title: '实践能力(1-8)', width:"8%"}
+                        ,{fixed: 'right', width:"30%", align:'center', toolbar: '#barDemo'}
+                    ]
+                ]
+        });
+
+        table.on('tool(person_test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+
+            if(layEvent === 'del'){
+                layer.confirm('确认删除该行',{
+                    btn:['删除','取消']
+                    ,yes:function(index)
+                    {
+                        var url = "http://localhost:8080/student_course/DeleteOneSC?s_id=" + data.s_id + "&c_id=" +data.c_id;
+                        var xmlmhttp = new XMLHttpRequest();
+                        xmlmhttp.open("GET",url,false);
+                        xmlmhttp.send(url);
+                        layer.close(index);
+                        obj.del();
+                    },btn2:function (index) {
+                        layer.close(index);
+                    }
+                });
+            } else if(layEvent === 'edit'){
+                window.location.href = "http://localhost:8080/ChangeSC#"+data.s_id + data.c_id;
+            }
+        });
+    });
+
+</script>
+</body>
+</html>
